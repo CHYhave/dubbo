@@ -95,6 +95,7 @@
     <module>dubbo-spring-boot</module>
     <module>dubbo-test</module>
     <module>dubbo-maven-plugin</module>
+      <module>dubbo-remoting/dubbo-rmoting-http3</module>
   </modules>
 
   <scm>

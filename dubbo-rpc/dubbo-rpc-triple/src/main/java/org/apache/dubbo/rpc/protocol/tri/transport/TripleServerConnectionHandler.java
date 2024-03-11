@@ -16,6 +16,8 @@
  */
 package org.apache.dubbo.rpc.protocol.tri.transport;
 
+import io.netty.channel.Channel;
+
 import org.apache.dubbo.common.logger.ErrorTypeAwareLogger;
 import org.apache.dubbo.common.logger.LoggerFactory;
 
@@ -53,6 +55,7 @@ public class TripleServerConnectionHandler extends Http2ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        Channel channel = ctx.channel();
         if (msg instanceof Http2PingFrame) {
             if (((Http2PingFrame) msg).content() == GRACEFUL_SHUTDOWN_PING) {
                 if (gracefulShutdown == null) {

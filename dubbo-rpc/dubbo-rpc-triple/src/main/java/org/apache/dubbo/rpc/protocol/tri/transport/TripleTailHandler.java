@@ -16,10 +16,16 @@
  */
 package org.apache.dubbo.rpc.protocol.tri.transport;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ReferenceCounted;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * Process unhandled message to avoid mem leak and netty's unhandled exception
@@ -27,6 +33,11 @@ import io.netty.util.ReferenceCounted;
 public class TripleTailHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        Channel channel = ctx.channel();
+        List<ChannelHandler> list = new ArrayList<>();
+        for (Entry<String, ChannelHandler> stringChannelHandlerEntry : channel.pipeline()) {
+            list.add(stringChannelHandlerEntry.getValue());
+        }
         if (msg instanceof ReferenceCounted) {
             ReferenceCountUtil.release(msg);
         }
